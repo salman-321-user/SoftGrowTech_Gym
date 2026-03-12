@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>IGNIS • universal gym</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0e;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #ededf2;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* custom scroll (original) */
+    ::-webkit-scrollbar { width: 12px; background: #0c0c0f; }
+    ::-webkit-scrollbar-track { background: #1a1a20; border-left: 1px solid #2a2a35; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #f97316, #a855f7); border-radius: 20px; border: 2px solid #0c0c0f; }
+    ::-webkit-scrollbar-thumb:hover { background: linear-gradient(145deg, #fb923c, #c084fc); }
+
+    html { scroll-behavior: smooth; }
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    section { padding: 4rem 0; }
+
+    /* section titles with gradient (original) */
+    .section-title {
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #f97316 0%, #a855f7 60%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 70%;
+      height: 4px;
+      background: linear-gradient(90deg, #f97316, #a855f7, #3b82f6);
+      border-radius: 4px;
+    }
+
+    /* ----- HEADER (fully responsive) ----- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.98);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(249, 115, 22, 0.2);
+    }
+    .nav-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(45deg, #f97316, #c084fc, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .logo i { color: #f97316; -webkit-text-fill-color: initial; }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+    }
+    .nav-links a {
+      color: #ddddff;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      padding: 0.3rem 0;
+      white-space: nowrap;
+      font-size: 0.95rem;
+    }
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, #f97316, #a855f7);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover::before { width: 100%; }
+
+    /* ----- ANIMATED ROTATOR (original animation) ----- */
+    .feature-rotator {
+      background: #13131c;
+      border-bottom: 1px solid #2f2f45;
+      padding: 1rem 0;
+      border-top: 1px solid #2a2a3a;
+    }
+    .rotator-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+    .static-label { color: #cbd5e1; font-weight: 600; }
+    .static-label i { color: #f97316; margin-right: 6px; }
+    .rotating-words {
+      height: 2.2rem;
+      overflow: hidden;
+      display: inline-block;
+    }
+    .rotating-words ul {
+      list-style: none;
+      animation: rotateVertical 15s infinite;
+      padding: 0;
+      margin: 0;
+    }
+    .rotating-words li {
+      height: 2.2rem;
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      background: linear-gradient(145deg, #f97316, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @keyframes rotateVertical {
+      0%, 12% { transform: translateY(0); }
+      16%, 28% { transform: translateY(-2.2rem); }
+      32%, 44% { transform: translateY(-4.4rem); }
+      48%, 60% { transform: translateY(-6.6rem); }
+      64%, 76% { transform: translateY(-8.8rem); }
+      80%, 92% { transform: translateY(-11rem); }
+      100% { transform: translateY(0); }
+    }
+    .rotator-badge {
+      background: #a855f7;
+      color: black;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    /* ----- HERO (original animations restored) ----- */
+    .hero {
+      min-height: auto;
+      background: radial-gradient(circle at 70% 30%, #231f2e, #0a0a0f);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 10vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      background: linear-gradient(to right, #ffffff, #d8b4fe, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+    .hero-content p {
+      font-size: 1.2rem;
+      color: #b8b8d6;
+      margin: 1.5rem 0 2rem;
+      border-left: 5px solid #f97316;
+      padding-left: 1.5rem;
+    }
+    .hero-feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .hero-feature-list li {
+      list-style: none;
+      color: #d1d1f0;
+    }
+    .hero-feature-list i { color: #3b82f6; margin-right: 8px; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(145deg, #f97316, #a855f7);
+      color: white;
+      font-weight: bold;
+      padding: 1rem 2.8rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(249,115,22,0.4);
+      transition: 0.3s;
+      font-size: 1.1rem;
+      margin-right: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #f97316;
+      box-shadow: none;
+    }
+    .btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 20px 35px rgba(168,85,247,0.6);
+    }
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .stat-item h3 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #f97316;
+    }
+    .hero-image {
+      background: #1b1b28;
+      border-radius: 30px 10px 30px 10px;
+      min-height: 300px;
+      box-shadow: 0 25px 40px -10px black, 0 0 0 2px rgba(249,115,22,0.3) inset;
+      background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      animation: float 6s infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* ----- GALLERY (original hover + scale) ----- */
+    .gallery { background: #0c0c12; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      border-radius: 20px 8px 20px 8px;
+      overflow: hidden;
+      height: 250px;
+      border: 2px solid transparent;
+      transition: 0.3s;
+      box-shadow: 0 15px 30px -10px black;
+    }
+    .gallery-item:hover {
+      border-color: #f97316;
+      transform: scale(1.02);
+    }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ----- FACILITIES (original hover + translateY) ----- */
+    .facilities { background: #0e0e14; }
+    .fac-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .fac-card {
+      background: #171720;
+      border-radius: 30px;
+      padding: 2.5rem 1.5rem;
+      border-bottom: 4px solid #f97316;
+      transition: 0.3s;
+    }
+    .fac-card:hover {
+      transform: translateY(-12px);
+      border-bottom-color: #a855f7;
+      background: #20202d;
+    }
+    .fac-card i {
+      font-size: 3rem;
+      background: linear-gradient(145deg, #f97316, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .fac-card h3 { color: white; font-size: 1.8rem; margin: 1rem 0 0.5rem; }
+    .fac-card p { color: #b5b5d4; margin-bottom: 1rem; }
+    .fac-feature-list { list-style: none; }
+    .fac-feature-list li { padding: 0.2rem 0; color: #cbd5e1; }
+    .fac-feature-list i { font-size: 0.8rem; margin-right: 6px; color: #3b82f6; -webkit-text-fill-color: #3b82f6; }
+
+    /* ----- SERVICES (original hover) ----- */
+    .services { background: #0b0b11; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .service-item {
+      background: #161620;
+      padding: 2.8rem 2rem;
+      border-radius: 40px 10px 40px 10px;
+      border: 1px solid #2d2d44;
+      transition: 0.3s;
+    }
+    .service-item:hover {
+      border-color: #a855f7;
+      background: #1e1e2c;
+      box-shadow: 0 0 30px rgba(168,85,247,0.2);
+    }
+    .service-icon { font-size: 3rem; color: #f97316; }
+    .service-item h3 {
+      font-size: 2rem;
+      margin: 1rem 0 0.5rem;
+      background: linear-gradient(135deg, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .service-desc { color: #b0b0d0; margin-bottom: 1.2rem; }
+    .service-highlight { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+    .service-highlight span {
+      background: #2a2a3c;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      color: #f97316;
+      font-weight: 600;
+    }
+
+    /* ----- MEMBERSHIP (original card hover + shadow + popular) ----- */
+    .membership { background: #0a0a0f; }
+    .plan-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .plan-card {
+      background: #151520;
+      border-radius: 40px;
+      padding: 3rem 2rem;
+      border: 1px solid #2d2d45;
+      position: relative;
+      transition: 0.3s;
+    }
+    .plan-card.popular {
+      transform: scale(1.02);
+      border: 2px solid #f97316;
+      box-shadow: 0 0 40px #a855f7;
+    }
+    .plan-card:hover {
+      box-shadow: 0 0 40px #f97316, 0 0 25px #a855f7;
+    }
+    .badge {
+      position: absolute;
+      top: 20px;
+      right: -25px;
+      background: #f97316;
+      color: black;
+      padding: 0.3rem 2rem;
+      transform: rotate(45deg);
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .plan-card h3 { font-size: 2.3rem; color: white; }
+    .plan-price {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(145deg, #f97316, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 1rem 0;
+    }
+    .plan-price span { font-size: 1rem; color: #aaa; -webkit-text-fill-color: #aaa; }
+    .plan-features { list-style: none; margin: 1.8rem 0; text-align: left; }
+    .plan-features li { padding: 0.5rem 0; color: #d0d0f0; border-bottom: 1px dashed #3f3f5a; display: flex; align-items: center; gap: 0.5rem; }
+    .plan-features i { color: #3b82f6; width: 1.5rem; }
+    .plan-btn {
+      background: transparent;
+      border: 2px solid #f97316;
+      padding: 1rem;
+      border-radius: 60px;
+      font-weight: bold;
+      color: white;
+      transition: 0.3s;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+    }
+    .plan-btn:hover { background: #f97316; color: black; }
+
+    /* ----- FOOTER (original equal gap icons) ----- */
+    footer {
+      background: #030307;
+      border-top: 1px solid #2a2a3e;
+      padding: 4rem 0 2rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .footer-logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(145deg, #f97316, #a855f7, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+    .footer-col p { color: #a5a5c7; margin: 1.2rem 0; }
+    .social-links {
+      display: flex;
+      gap: 2.5rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .social-links a {
+      color: #f97316;
+      font-size: 2rem;
+      transition: 0.2s;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      text-decoration: none;
+    }
+    .social-links a:hover {
+      color: #a855f7;
+      transform: translateY(-6px);
+    }
+    .footer-col h4 {
+      font-size: 1.5rem;
+      margin-bottom: 1.8rem;
+      color: white;
+      border-left: 4px solid #f97316;
+      padding-left: 1rem;
+    }
+    .footer-col ul li { list-style: none; margin-bottom: 1rem; }
+    .footer-col ul li a { color: #b8b8de; text-decoration: none; font-size: 1.05rem; transition: 0.2s; }
+    .footer-col ul li a:hover { color: #f97316; margin-left: 6px; }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #d1d1f0;
+      margin: 1.2rem 0;
+    }
+    .contact-detail i { width: 28px; color: #f97316; font-size: 1.3rem; }
+    .copyright {
+      text-align: center;
+      padding-top: 2.5rem;
+      color: #6b6b94;
+      border-top: 1px solid #2a2a42;
+      font-size: 1rem;
+    }
+
+    /* ----- FULLY RESPONSIVE MEDIA QUERIES (keep animations) ----- */
+    @media (min-width: 550px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .fac-grid { grid-template-columns: repeat(2, 1fr); }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .plan-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 768px) {
+      .nav-container { flex-direction: row; padding: 0.8rem 2rem; }
+      .nav-links a { font-size: 1rem; }
+      .hero-grid { grid-template-columns: 1.3fr 0.9fr; }
+      .hero-image { min-height: 450px; }
+    }
+
+    @media (min-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+      .fac-grid { grid-template-columns: repeat(4, 1fr); }
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+      .plan-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: 2fr 1fr 1fr 1.8fr; }
+      .plan-card.popular { transform: scale(1.05); }
+    }
+
+    @media (min-width: 1300px) {
+      .hero-image { min-height: 500px; }
+    }
+
+    /* small screens button stacking */
+    @media (max-width: 480px) {
+      .btn { display: block; width: 100%; margin: 0.5rem 0; text-align: center; }
+      .hero-feature-list { grid-template-columns: 1fr; }
+      .badge { right: 10px; transform: none; top: 15px; padding: 0.2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-container">
+      <div class="logo"><i class="fas fa-dumbbell"></i> IGNIS</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#facilities">Facilities</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#membership">Membership</a>
+        <a href="#footer">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-rotator">
+    <div class="container rotator-wrapper">
+      <span class="static-label"><i class="fas fa-bolt"></i> TODAY'S INTENSITY</span>
+      <div class="rotating-words">
+        <ul>
+          <li>🏋️ 80+ weekly classes</li>
+          <li>🔥 strongman weekend</li>
+          <li>💪 pro powerlifting club</li>
+          <li>🧊 cryo recovery -40%</li>
+          <li>⚡ new battle ropes</li>
+          <li>🏆 10+ elite coaches</li>
+        </ul>
+      </div>
+      <span class="rotator-badge">#UNLEASH THE FIRE</span>
+    </div>
+  </div>
+
+  <section id="home" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <h1>IGNITE YOUR <br>INNER FIRE</h1>
+        <p>10,000 sqft of pure intensity — open 24/7. Universal training with elite coaches, strongman cave, and dark atmosphere.</p>
+        <ul class="hero-feature-list">
+          <li><i class="fas fa-check-circle"></i> 50+ tons of plates</li>
+          <li><i class="fas fa-check-circle"></i> Eleiko & Rogue equipment</li>
+          <li><i class="fas fa-check-circle"></i> 4 dedicated platforms</li>
+          <li><i class="fas fa-check-circle"></i> steam & cryo spa</li>
+        </ul>
+        <div style="margin: 2rem 0;">
+          <a href="#membership" class="btn"><i class="fas fa-bolt"></i> JOIN NOW</a>
+          <a href="#gallery" class="btn btn-outline">VIEW GALLERY</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><h3>80+</h3><p>weekly classes</p></div>
+          <div class="stat-item"><h3>15+</h3><p>pro trainers</p></div>
+          <div class="stat-item"><h3>24/7</h3><p>key access</p></div>
+        </div>
+      </div>
+      <div class="hero-image"></div>
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery">
+    <div class="container">
+      <h2 class="section-title">GYM SNAPSHOTS</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop" alt="gym equipment"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1975&auto=format&fit=crop" alt="man training"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=80&w=2070&auto=format&fit=crop" alt="strongman"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=1974&auto=format&fit=crop" alt="gym interior"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?q=80&w=1931&auto=format&fit=crop" alt="male athlete"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?q=80&w=1974&auto=format&fit=crop" alt="man cooling down"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=2070&auto=format&fit=crop" alt="working out"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=2070&auto=format&fit=crop" alt="a man lifting weights"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="facilities" class="facilities">
+    <div class="container">
+      <h2 class="section-title">FACILITIES</h2>
+      <div class="fac-grid">
+        <div class="fac-card"><i class="fas fa-dumbbell"></i><h3>HYDRA ZONE</h3><p>Powerlifting & strongman mecca</p><ul class="fac-feature-list"><li><i class="fas fa-check"></i> 6 deadlift platforms</li><li><i class="fas fa-check"></i> yoke / atlas stones</li><li><i class="fas fa-check"></i> Texas power bars</li></ul></div>
+        <div class="fac-card"><i class="fas fa-heartbeat"></i><h3>CARDIO PIT</h3><p>Dark neon high-intensity</p><ul class="fac-feature-list"><li><i class="fas fa-check"></i> 12 Woodway treadmills</li><li><i class="fas fa-check"></i> Assault bikes / SkiErg</li><li><i class="fas fa-check"></i> Jacob's ladder</li></ul></div>
+        <div class="fac-card"><i class="fas fa-hot-tub"></i><h3>CRYO SPA</h3><p>Recovery like no other</p><ul class="fac-feature-list"><li><i class="fas fa-check"></i> -140°C cryo chamber</li><li><i class="fas fa-check"></i> Normatec boots</li><li><i class="fas fa-check"></i> infrared sauna</li></ul></div>
+        <div class="fac-card"><i class="fas fa-brain"></i><h3>MINDLAB</h3><p>Purple light mobility</p><ul class="fac-feature-list"><li><i class="fas fa-check"></i> daily stretch</li><li><i class="fas fa-check"></i> Normatec recovery</li><li><i class="fas fa-check"></i> meditation pods</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <div class="container">
+      <h2 class="section-title">SERVICES</h2>
+      <div class="services-grid">
+        <div class="service-item"><div class="service-icon"><i class="fas fa-user-ninja"></i></div><h3>1on1 coaching</h3><p class="service-desc">Custom programs, video analysis, nutrition & contest prep.</p><div class="service-highlight"><span>60 min</span><span>online check-in</span><span>form fix</span></div></div>
+        <div class="service-item"><div class="service-icon"><i class="fas fa-fire"></i></div><h3>IGNIS classes</h3><p class="service-desc">HIIT, strongman, boxing, hot yoga. 80+ weekly.</p><div class="service-highlight"><span>max 12</span><span>45 min</span><span>all levels</span></div></div>
+        <div class="service-item"><div class="service-icon"><i class="fas fa-clipboard-check"></i></div><h3>Body composition</h3><p class="service-desc">DEXA, InBody 770, metabolic & posture analysis.</p><div class="service-highlight"><span>quarterly</span><span>detailed report</span><span>coach included</span></div></div>
+        <div class="service-item" style="background:#1b1b28;"><i class="fas fa-weight-hanging service-icon"></i><h3>strongman club</h3><p class="service-desc">Log press, farmer's walk, tire flips. coached sessions.</p></div>
+        <div class="service-item" style="background:#1b1b28;"><i class="fas fa-hand-holding-heart service-icon"></i><h3>rehab & prehab</h3><p class="service-desc">Physical therapy, mobility screening, injury prevention.</p></div>
+        <div class="service-item" style="background:#1b1b28;"><i class="fas fa-clock service-icon"></i><h3>24/7 access</h3><p class="service-desc">Key fob entry, overnight staff, secure lockers.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="membership" class="membership">
+    <div class="container">
+      <h2 class="section-title">MEMBERSHIP</h2>
+      <div class="plan-grid">
+        <div class="plan-card"><h3>Basic</h3><div class="plan-price">$39<span>/month</span></div><ul class="plan-features"><li><i class="fas fa-check-circle"></i> Off-peak (9am-4pm)</li><li><i class="fas fa-check-circle"></i> Basic strength area</li><li><i class="fas fa-check-circle"></i> 1 group class/week</li><li><i class="fas fa-check-circle"></i> Locker & shower</li><li><i class="fas fa-times-circle"></i> No spa access</li></ul><button class="plan-btn">choose nova</button></div>
+        <div class="plan-card popular"><div class="badge">🔥 POPULAR</div><h3>Standard</h3><div class="plan-price">$79<span>/month</span></div><ul class="plan-features"><li><i class="fas fa-check-circle"></i> 24/7 full access</li><li><i class="fas fa-check-circle"></i> Unlimited classes</li><li><i class="fas fa-check-circle"></i> Cryo & compression</li><li><i class="fas fa-check-circle"></i> 2 PT sessions/month</li><li><i class="fas fa-check-circle"></i> 1 guest pass/week</li></ul><button class="plan-btn" style="background:#f97316; color:black;">join pulsar</button></div>
+        <div class="plan-card"><h3>Premium</h3><div class="plan-price">$199<span>/month</span></div><ul class="plan-features"><li><i class="fas fa-check-circle"></i> VIP 24/7 priority</li><li><i class="fas fa-check-circle"></i> Unlimited PT</li><li><i class="fas fa-check-circle"></i> All recovery + massage</li><li><i class="fas fa-check-circle"></i> 4 guest passes</li><li><i class="fas fa-check-circle"></i> Private locker + towel</li></ul><button class="plan-btn">choose quasar</button></div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="container footer-grid">
+      <div class="footer-col"><div class="footer-logo"><i class="fas fa-dumbbell"></i> IGNIS</div><p>Universal gym where fire meets iron. Dark theme, elite vibe, orange & purple energy. 24/7 access for the dedicated.</p><div class="social-links"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-tiktok"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-discord"></i></a></div></div>
+      <div class="footer-col"><h4>EXPLORE</h4><ul><li><a href="#home">Home</a></li><li><a href="#facilities">Facilities</a></li><li><a href="#services">Services</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#membership">Membership</a></li><li><a href="#">Events</a></li></ul></div>
+      <div class="footer-col"><h4>SUPPORT</h4><ul><li><a href="#">FAQs</a></li><li><a href="#">Trainer portal</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy</a></li><li><a href="#">Careers</a></li><li><a href="#">Become a partner</a></li></ul></div>
+      <div class="footer-col"><h4>LOCATION</h4><div class="contact-detail"><i class="fas fa-map-pin"></i> 3030 Matrix Ave, Cyber City</div><div class="contact-detail"><i class="fas fa-phone-alt"></i> +1 (800) IGNIS-GYM</div><div class="contact-detail"><i class="fas fa-envelope"></i> fire@ignis.com</div><div class="contact-detail"><i class="fas fa-clock"></i> 24/7 • key fob entry</div><div class="contact-detail"><i class="fas fa-parking"></i> free parking for members</div></div>
+    </div>
+    <div class="copyright"><p>© 2025 IGNIS UNIVERSAL. ALL RIGHTS RESERVED.</p></div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.nav-links a, .footer-col a[href^="#"], .btn[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          const navHeight = 70;
+          const y = target.getBoundingClientRect().top + window.scrollY - navHeight;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // extra hover effect for plan cards (original script)
+    document.querySelectorAll('.plan-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.boxShadow = '0 0 40px #f97316, 0 0 25px #a855f7';
+      });
+      card.addEventListener('mouseleave', () => {
+        if (card.classList.contains('popular')) {
+          card.style.boxShadow = '0 0 40px #a855f7';
+        } else {
+          card.style.boxShadow = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
